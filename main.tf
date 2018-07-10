@@ -18,5 +18,5 @@ resource "aws_cloudwatch_metric_alarm" "metric_alarm" {
   period = "${var.period}"
   threshold = "${var.threshold}"
   statistic = "${var.statistic}"
-  alarm_actions = "${var.alarm_action_arns != "" ? var.alarm_action_arns : ""}"
+  alarm_actions = "${var.alarm_action_arns}"
 }

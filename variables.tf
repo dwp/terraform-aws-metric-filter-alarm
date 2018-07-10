@@ -25,9 +25,9 @@ variable "metric_filter_name" {
 }
 
 variable "alarm_action_arns" {
-  type = "string"
+  type = "list"
   description = "The list of actions to execute when this alarm transitions into an ALARM state from any other state. Each action is specified as an Amazon Resource Number (ARN)"
-  default = ""
+  default = []
 }
 
 variable "comparison_operator" {
