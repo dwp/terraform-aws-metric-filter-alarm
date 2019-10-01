@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_log_metric_filter" "metric_filter" {
   log_group_name = "${var.log_group_name}"
-  "metric_transformation" {
+  metric_transformation {
     name = "${var.metric_filter_name != "" ? var.metric_filter_name : var.alarm_name}"
     namespace = "${var.metric_namespace}"
     value = "1"
@@ -18,5 +18,5 @@ resource "aws_cloudwatch_metric_alarm" "metric_alarm" {
   period = "${var.period}"
   threshold = "${var.threshold}"
   statistic = "${var.statistic}"
-  alarm_actions = ["${var.alarm_action_arns}"]
+  alarm_actions = "${var.alarm_action_arns}"
 }
