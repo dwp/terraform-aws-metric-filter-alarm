@@ -8,6 +8,12 @@ variable "metric_namespace" {
   description = "The destination namespace of the CloudWatch metric"
 }
 
+variable "metric_value" {
+  type = "string"
+  description = "The value of the CloudWatch metric"
+  default = "1"
+}
+
 variable "pattern" {
   type = "string"
   description = "A valid CloudWatch Logs filter pattern for extracting metric data out of ingested log events"

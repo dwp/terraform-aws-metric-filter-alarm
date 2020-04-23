@@ -3,7 +3,7 @@ resource "aws_cloudwatch_log_metric_filter" "metric_filter" {
   metric_transformation {
     name = "${var.metric_filter_name != "" ? var.metric_filter_name : var.alarm_name}"
     namespace = "${var.metric_namespace}"
-    value = "1"
+    value = "${var.metric_value}"
   }
   name = "${var.metric_filter_name != "" ? var.metric_filter_name : var.alarm_name}"
   pattern = "${var.pattern}"
