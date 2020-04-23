@@ -11,7 +11,7 @@ variable "metric_namespace" {
 variable "metric_value" {
   type = "string"
   description = "The value of the CloudWatch metric"
-  default = "0"
+  default = "1"
 }
 
 variable "pattern" {
