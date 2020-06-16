@@ -24,6 +24,12 @@ variable "alarm_name" {
   description = "The descriptive name for the alarm. This name must be unique within the user's AWS account"
 }
 
+variable "alarm_description" {
+  type        = string
+  description = "The description for the alarm"
+  default     = ""
+}
+
 variable "metric_filter_name" {
   type        = string
   description = "A name for the metric filter"
