@@ -80,6 +80,6 @@ variable "notification_type" {
 
 variable "severity" {
   type        = string
-  description = "The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
+  description = "(optional) The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
   default     = "Medium"
 }
