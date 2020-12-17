@@ -74,7 +74,7 @@ variable "statistic" {
 
 variable "notification_type" {
   type        = string
-  description = "The notification type of this alarm. Either of the following is supported: Info, Warning, Error"
+  description = "(optional) The notification type of this alarm. Either of the following is supported: Info, Warning, Error"
   default     = "Warning"
 }
 
