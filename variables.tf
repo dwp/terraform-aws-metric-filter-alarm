@@ -74,12 +74,12 @@ variable "statistic" {
 
 variable "notification_type" {
   type        = string
-  description = "The notification type of this alarm. Either of the following is supported: Info, Warning, Error"
+  description = "(optional) The notification type of this alarm. Either of the following is supported: Info, Warning, Error"
   default     = "Warning"
 }
 
 variable "severity" {
   type        = string
-  description = "The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
+  description = "(optional) The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
   default     = "Medium"
 }
