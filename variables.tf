@@ -71,3 +71,15 @@ variable "statistic" {
   description = "The statistic to apply to the alarm's associated metric. Either of the following is supported: SampleCount, Average, Sum, Minimum, Maximum"
   default     = "Sum"
 }
+
+variable "notification_type" {
+  type        = string
+  description = "(optional) The notification type of this alarm. Either of the following is supported: Info, Warning, Error"
+  default     = "Warning"
+}
+
+variable "severity" {
+  type        = string
+  description = "(optional) The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
+  default     = "Medium"
+}
