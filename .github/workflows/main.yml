@@ -35,8 +35,7 @@ jobs:
           increment: ${{ steps.prepare-semver.outputs.semver_increment }}
       - name: Get publish version
         id: get-publish-version
-        run: echo ${{ steps.semver.outputs.semver }}
-             echo "::set-output name=publish-version::${{ steps.semver.outputs.semver }}"
+        run: echo "::set-output name=publish-version::${{ steps.semver.outputs.semver }}"
           
     # VERSION=$(echo ${{ steps.semver.outputs.latest_version_out }}  | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
 
