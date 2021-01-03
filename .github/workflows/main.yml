@@ -8,9 +8,6 @@ on:
       - 'docs/**'
       - '*.md'
 
-env:
-  IMAGE_NAME: dwpdigital/dataworks-repo-template-docker
-
 jobs:
   get-publish-version:
     runs-on: ubuntu-latest
