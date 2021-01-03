@@ -25,13 +25,13 @@ jobs:
           fi
       - name: Get publish version
         id: get-publish-version
-        run: echo $IS_MAJOR_RELEASE
-             echo $IS_MINOR_RELEASE 
-             | 
+        run: | 
           LATEST_VERSION=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
           [  -z "$LATEST_VERSION" ] && LATEST_VERSION="0.0.0"
           VERSION=$(echo $LATEST_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
           echo "::set-output name=publish-version::${VERSION}"
+          echo $IS_MINOR_RELEASE 
+          echo $IS_MAJOR_RELEASE
   publish-github-release:
     runs-on: ubuntu-latest
     needs: [get-publish-version]
