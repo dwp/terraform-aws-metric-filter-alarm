@@ -15,7 +15,6 @@ jobs:
       publish-version: ${{ steps.get-publish-version.outputs.publish-version }}
     steps:
       - name: Prepare-Version-Upgrade
-        if: "contains(github.event.head_commit.message, 'Major Release') || contains(github.event.head_commit.message, 'Minor Release')"
         id: version
         run: |
           LATEST_VERSION=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
