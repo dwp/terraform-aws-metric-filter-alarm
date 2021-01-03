@@ -17,13 +17,12 @@ jobs:
       - name: Release Type Check
         if: "contains(github.event.head_commit.message, 'Major Release') || contains(github.event.head_commit.message, 'Minor Release')"
         id: release-type
-        run: echo ::set-output name=IS_MAJOR_RELEASE::"true"
-          # |
-          # if [[ github.event.head_commit.message == *"Major Release"* ]]; then
-            
-          # elif [[ github.event.head_commit.message == *"Minor Release"* ]]; then
-          #   echo ::set-output name=IS_MINOR_RELEASE::true
-          # fi
+        run: |
+          if [[ {{ github.event.head_commit.message }} == *"Major Release"* ]]; then
+            echo ::set-output name=IS_MAJOR_RELEASE::"true"
+          elif [[ github.event.head_commit.message == *"Minor Release"* ]]; then
+            echo ::set-output name=IS_MINOR_RELEASE::true
+          fi
       - name: Get publish version
         id: get-publish-version
         run: | 
