@@ -19,8 +19,6 @@ jobs:
       - name: My first step
         run: echo This event is a pull request that had an assignee removed.
 
-
-jobs:
   get-publish-version:
     runs-on: ubuntu-latest
     outputs:
