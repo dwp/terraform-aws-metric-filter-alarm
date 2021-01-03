@@ -9,6 +9,18 @@ on:
       - '*.md'
 
 jobs:
+  check-commit-for-major-minor:
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'Major Release') || contains(github.event.head_commit.message, 'Minor Release')"
+    outputs: 
+      isMajorRelease: ${{ steps.check-commit-for-major-minor.outputs.isMajorRelease }}
+      isMinorRelease: ${{ steps.check-commit-for-major-minor.outputs.isMinorRelease }}
+    steps:
+      - name: My first step
+        run: echo This event is a pull request that had an assignee removed.
+
+
+jobs:
   get-publish-version:
     runs-on: ubuntu-latest
     outputs:
