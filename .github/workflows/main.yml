@@ -16,12 +16,12 @@ jobs:
     steps:
       - name: Release Type Check
         if: "contains(github.event.head_commit.message, 'Major Release') || contains(github.event.head_commit.message, 'Minor Release')"
-        id: release-type-check
+        id: release-type
         run: |
           if [[ github.event.head_commit.message == *"Major Release"* ]]; then
-            IS_MAJOR_RELEASE=true
+            echo ::set-output name=IS_MAJOR_RELEASE::true
           elif [[ github.event.head_commit.message == *"Minor Release"* ]]; then
-            IS_MINOR_RELEASE=true
+            echo ::set-output name=IS_MINOR_RELEASE::true
           fi
       - name: Get publish version
         id: get-publish-version
@@ -30,8 +30,8 @@ jobs:
           [  -z "$LATEST_VERSION" ] && LATEST_VERSION="0.0.0"
           VERSION=$(echo $LATEST_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
           echo "::set-output name=publish-version::${VERSION}"
-          echo $IS_MINOR_RELEASE 
-          echo $IS_MAJOR_RELEASE
+          echo ${{ steps.release-type.outputs.IS_MAJOR_RELEASE }} 
+          echo ${{ steps.release-type.outputs.IS_MINOR_RELEASE }}
   publish-github-release:
     runs-on: ubuntu-latest
     needs: [get-publish-version]
