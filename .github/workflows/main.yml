@@ -20,9 +20,10 @@ jobs:
           LATEST_VERSION=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
           [  -z "$LATEST_VERSION" ] && LATEST_VERSION="0.0.0"
           echo ::set-output name=latest_version_out::$LATEST_VERSION
-          if [[ "${{ github.event.head_commit.message }}" == *"Major Release"* ]]; then
+          commit_message="${{ github.event.head_commit.message }}"
+          if [[ "${commit_message,,}" == *"Major Release"* ]]; then
             echo ::set-output name=semver_increment::"m"
-          elif [[ "${{ github.event.head_commit.message }}" == *"Minor Release"* ]]; then
+          elif [[ "${commit_message,,}" == *"Minor Release"* ]]; then
             echo ::set-output name=semver_increment::"i"
           else 
             echo ::set-output name=semver_increment::"p"
@@ -37,7 +38,7 @@ jobs:
         id: get-publish-version
         run: echo "::set-output name=publish-version::${{ steps.semver.outputs.semver }}"
           
-          
+
   publish-github-release:
     runs-on: ubuntu-latest
     needs: [get-publish-version]
