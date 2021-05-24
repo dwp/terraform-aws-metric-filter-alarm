@@ -20,5 +20,9 @@ resource "aws_cloudwatch_metric_alarm" "metric_alarm" {
   threshold           = var.threshold
   statistic           = var.statistic
   alarm_actions       = var.alarm_action_arns
-  tags                = { notification_type = var.notification_type, severity = var.severity }
+  tags                = { 
+      notification_type = var.notification_type,
+      severity = var.severity,
+      Name = var.alarm_name
+  }
 }
