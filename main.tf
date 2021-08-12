@@ -20,6 +20,7 @@ resource "aws_cloudwatch_metric_alarm" "metric_alarm" {
   threshold           = var.threshold
   statistic           = var.statistic
   alarm_actions       = var.alarm_action_arns
+  treat_missing_data  = var.treat_missing_data
   tags                = { 
       notification_type = var.notification_type,
       severity = var.severity,
