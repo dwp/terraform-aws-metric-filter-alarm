@@ -83,3 +83,9 @@ variable "severity" {
   description = "(optional) The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
   default     = "Medium"
 }
+
+variable "treat_missing_data" {
+  type        = string
+  description = "(optional) How the alarm is to handle missing data points. Either of the following is supported: missing, ignore, breaching, and notBreaching."
+  default     = "missing"
+}
