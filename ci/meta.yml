@@ -65,10 +65,10 @@ meta:
           - -exc
           - |
             cp ../terraform-config/terraform.tfvars ./example
-            go mod init ses
+            go mod init alarm
             go mod tidy
             cd tests/terratest
-            go test -v -timeout 30m ses_test.go
+            go test -v -timeout 30m alarm_test.go
           dir: terraform-aws-metric-filter-alarm
         inputs:
           - name: terraform-aws-metric-filter-alarm
