@@ -1,0 +1,121 @@
+meta:
+  plan:
+    terraform-bootstrap:
+      task: terraform-bootstrap
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: dwpdigital/jinja-yaml-aws
+            version: 0.0.19
+            tag: 0.0.19
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              python ./example/bootstrap_terraform.py
+              cp ./example/terraform.tfvars ../terraform-config
+          dir: terraform-aws-metric-filter-alarm
+        inputs:
+          - name: terraform-aws-metric-filter-alarm
+        outputs:
+          - name: terraform-aws-metric-filter-alarm
+          - name: terraform-config
+      params:
+        AWS_REGION: eu-west-2
+
+    terraform-common-config:
+      config:
+        platform: linux
+        image_resource:
+          type: registry-image
+          source:
+            repository: dwpdigital/all-terra-tools-docker
+      params:
+        TF_INPUT: false
+        TF_CLI_ARGS_apply: -lock-timeout=300s
+        TF_CLI_ARGS_plan: -lock-timeout=300s
+        TF_VAR_slack_webhook_url: ((dataworks.slack_webhook_url))
+        TF_VAR_costcode: ((dataworks.costcode))
+
+    pre-checks:
+      task: pre-checks
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            pre-commit install
+            pre-commit run --all-files
+          dir: terraform-aws-metric-filter-alarm
+        inputs:
+          - name: terraform-aws-metric-filter-alarm
+
+    terraform-terratest:
+      task: terraform-terratest
+      .: (( inject meta.plan.terraform-common-config ))
+      config:
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            cp ../terraform-config/terraform.tfvars ./example
+            go mod init ses
+            go mod tidy
+            cd tests/terratest
+            go test -v -timeout 30m ses_test.go
+          dir: terraform-aws-ses-notification-service
+        inputs:
+          - name: terraform-aws-metric-filter-alarm
+          - name: terraform-config
+
+    notify:
+      on_success:
+        put: slack
+        attempts: 1
+        params:
+          channel: "#dataworks-concourse-notifications"
+          icon_emoji: ":concourse-green:"
+          attachments:
+            - color: "#27bd06"
+              text: |
+                The <https://ci.dataworks.dwp.gov.uk/builds/$BUILD_ID|$BUILD_JOB_NAME> stage for <https://ci.dataworks.dwp.gov.uk/teams/dataworks/pipelines/$BUILD_PIPELINE_NAME|*$BUILD_PIPELINE_NAME*> has completed successfully.
+              attachment_type: "default"
+      on_failure:
+        put: slack
+        attempts: 1
+        params:
+          channel: "#dataworks-concourse-notifications"
+          icon_emoji: ":concourse-red:"
+          attachments:
+            - color: "#ed0707"
+              text: |
+                The <https://ci.dataworks.dwp.gov.uk/builds/$BUILD_ID|$BUILD_JOB_NAME> stage for <https://ci.dataworks.dwp.gov.uk/teams/dataworks/pipelines/$BUILD_PIPELINE_NAME|*$BUILD_PIPELINE_NAME*> has failed.
+              attachment_type: "default"
+      on_error:
+        put: slack
+        attempts: 1
+        params:
+          channel: "#dataworks-concourse-notifications"
+          icon_emoji: ":concourse-red:"
+          attachments:
+            - color: "#eff702"
+              text: |
+                The <https://ci.dataworks.dwp.gov.uk/builds/$BUILD_ID|$BUILD_JOB_NAME> stage for <https://ci.dataworks.dwp.gov.uk/teams/dataworks/pipelines/$BUILD_PIPELINE_NAME|*$BUILD_PIPELINE_NAME*> has errored.
+              attachment_type: "default"
+      on_abort:
+        put: slack
+        attempts: 1
+        params:
+          channel: "#dataworks-concourse-notifications"
+          icon_emoji: ":concourse:"
+          attachments:
+            - color: "#472102"
+              text: |
+                The <https://ci.dataworks.dwp.gov.uk/builds/$BUILD_ID|$BUILD_JOB_NAME> stage for <https://ci.dataworks.dwp.gov.uk/teams/dataworks/pipelines/$BUILD_PIPELINE_NAME|*$BUILD_PIPELINE_NAME*> has been aborted.
+              attachment_type: "default"

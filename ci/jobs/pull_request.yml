@@ -1,0 +1,31 @@
+jobs:
+- name: terraform-aws-metric-filter-alarm-pr
+  plan:
+  - get: terraform-aws-metric-filter-alarm-pr
+    trigger: true
+    version: every
+  - put: terraform-aws-metric-filter-alarm-pr
+    params:
+      context: $BUILD_JOB_NAME
+      path: terraform-aws-metric-filter-alarm-pr
+      status: pending
+  - .: (( inject meta.plan.terraform-bootstrap ))
+    input_mapping:
+      terraform-aws-metric-filter-alarm: terraform-aws-metric-filter-alarm-pr
+  - task: pre-checks
+    .: (( inject meta.plan.pre-checks ))
+    input_mapping:
+      terraform-aws-metric-filter-alarm: terraform-aws-metric-filter-alarm-pr
+    on_failure:
+      put: terraform-aws-metric-filter-alarm-pr
+      params:
+        context: $BUILD_JOB_NAME
+        path: terraform-aws-metric-filter-alarm-pr
+        status: failure
+    on_success:
+      put: terraform-aws-metric-filter-alarm-pr
+      params:
+        context: $BUILD_JOB_NAME
+        path: terraform-aws-metric-filter-alarm-pr
+        status: success
+  .: (( inject meta.plan.notify ))

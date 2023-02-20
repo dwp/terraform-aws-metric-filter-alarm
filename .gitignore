@@ -4,9 +4,18 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+go.mod
+go.sum
 
 # .tfvars files
 *.tfvars
 
-# .idea folder
-.idea/*
+ci/terraform.tf
+
+**/example/.terraform
+**/example/.terraform*
+**/example/*.tfstate.*
+
+aviator_pipeline.yml
+
+**/.DS_Store
