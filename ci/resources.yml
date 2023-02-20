@@ -12,7 +12,7 @@ resources:
   type: pull-request
   source:
     access_token: ((dataworks-secrets.concourse_github_pat))
-    repository: dwp/terraform-aws-ses-notification-service
+    repository: dwp/terraform-aws-metric-filter-alarm
   check_every: 5m
   webhook_token: ((dataworks.concourse_github_webhook_token))
 
