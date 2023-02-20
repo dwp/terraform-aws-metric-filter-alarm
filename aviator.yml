@@ -1,0 +1,18 @@
+spruce:
+- base: ci/meta.yml
+  prune:
+  - meta
+  merge:
+  - with_in: ci/
+    regexp: ".*yml"
+    except:
+    - credentials.yml.example
+    - credentials.yml
+  - with_in: ci/jobs/
+  to: aviator_pipeline.yml
+fly:
+  name: terraform-aws-metric-filter-alarm
+  target: aws-concourse
+  expose: true
+  check_creds: true
+  config: aviator_pipeline.yml
