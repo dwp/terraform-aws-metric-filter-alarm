@@ -1,0 +1,14 @@
+jobs:
+- name: test
+  plan:
+  - get: terraform-aws-metric-filter-alarm
+    trigger: true
+    version: every
+  - .: (( inject meta.plan.terraform-bootstrap ))
+    input_mapping:
+      terraform-aws-metric-filter-alarm: terraform-aws-metric-filter-alarm
+  - task: terraform-terratest
+    .: (( inject meta.plan.terraform-terratest ))
+    input_mapping:
+      terraform-aws-metric-filter-alarm: terraform-aws-metric-filter-alarm
+  .: (( inject meta.plan.notify ))

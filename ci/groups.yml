@@ -1,0 +1,12 @@
+groups:
+- name: test
+  jobs:
+  - test
+
+- name: pull-request
+  jobs:
+  - terraform-aws-metric-filter-alarm-pr
+
+- name: update-pipeline
+  jobs:
+  - update-pipeline

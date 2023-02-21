@@ -1,0 +1,34 @@
+resources:
+- name: terraform-aws-metric-filter-alarm
+  type: git
+  source:
+    branch: test
+    access_token: ((dataworks-secrets.concourse_github_pat))
+    uri: https://github.com/dwp/terraform-aws-metric-filter-alarm.git
+  check_every: 5m
+  webhook_token: ((dataworks.concourse_github_webhook_token))
+
+- name: terraform-aws-metric-filter-alarm-pr
+  type: pull-request
+  source:
+    access_token: ((dataworks-secrets.concourse_github_pat))
+    repository: dwp/terraform-aws-metric-filter-alarm
+  check_every: 5m
+  webhook_token: ((dataworks.concourse_github_webhook_token))
+
+- name: terraform-aws-metric-filter-alarm-update-pipeline
+  type: git
+  source:
+    branch: master
+    access_token: ((dataworks-secrets.concourse_github_pat))
+    uri: https://github.com/dwp/terraform-aws-metric-filter-alarm.git
+    paths:
+      - ci/*
+      - aviator.yml
+  check_every: 5m
+  webhook_token: ((dataworks.concourse_github_webhook_token))
+
+- name: slack
+  type: slack-notification
+  source:
+    url: ((dataworks.slack_webhook_url))
