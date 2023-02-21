@@ -1,0 +1,19 @@
+name: 'Terraform GitHub Actions'
+on:
+  - pull_request
+jobs:
+  terraform:
+    name: 'Terraform fmt'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+      - name: 'Terraform Format'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: "1.0.11"
+          tf_actions_subcommand: 'fmt'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

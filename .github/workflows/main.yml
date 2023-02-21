@@ -25,19 +25,19 @@ jobs:
             echo ::set-output name=semver_increment::"m"
           elif [[ "${commit_message,,}" == *"minor release"* ]]; then
             echo ::set-output name=semver_increment::"i"
-          else 
+          else
             echo ::set-output name=semver_increment::"p"
           fi
       - name: Increment SemVer
         id: semver
         uses: matt-FFFFFF/simple-semver@v0.1.0
         with:
-          semver-input: ${{ steps.prepare-semver.outputs.latest_version_out }} 
+          semver-input: ${{ steps.prepare-semver.outputs.latest_version_out }}
           increment: ${{ steps.prepare-semver.outputs.semver_increment }}
       - name: Get publish version
         id: get-publish-version
         run: echo "::set-output name=publish-version::${{ steps.semver.outputs.semver }}"
-          
+
 
   publish-github-release:
     runs-on: ubuntu-latest
@@ -55,4 +55,3 @@ jobs:
           release_name: Release ${{ needs.get-publish-version.outputs.publish-version }}
           draft: false
           prerelease: false
-
