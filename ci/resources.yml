@@ -2,8 +2,19 @@ resources:
 - name: terraform-aws-metric-filter-alarm
   type: git
   source:
+    branch: master
+    username: ((dataworks.concourse_github_username))
+    password: ((dataworks-secrets.concourse_github_pat))
+    uri: https://github.com/dwp/terraform-aws-metric-filter-alarm.git
+  check_every: 5m
+  webhook_token: ((dataworks.concourse_github_webhook_token))
+
+- name: terraform-aws-metric-filter-alarm-test
+  type: git
+  source:
     branch: test
-    access_token: ((dataworks-secrets.concourse_github_pat))
+    username: ((dataworks.concourse_github_username))
+    password: ((dataworks-secrets.concourse_github_pat))
     uri: https://github.com/dwp/terraform-aws-metric-filter-alarm.git
   check_every: 5m
   webhook_token: ((dataworks.concourse_github_webhook_token))
