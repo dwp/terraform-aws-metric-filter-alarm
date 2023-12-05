@@ -1,3 +1,5 @@
+# DO NOT USE THIS REPO - MIGRATED TO GITLAB
+
 # AWS metric filter alarm Terraform module
 
 Terraform module that creates AWS CloudWatch metric filter and alarm
